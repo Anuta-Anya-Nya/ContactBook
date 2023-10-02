@@ -1,10 +1,10 @@
-const TableRowItem = () => {
+const TableRowItem = (props) => {
     return (
         <tr>
-            <th scope="row">1</th>
-            <td>ФИО</td>
-            <td>Телефон</td>
-            <td>Заметка</td>
+            <th scope="row">{props.contact.id}</th>
+            <td>{props.contact.fullName}</td>
+            <td>{props.contact.phone}</td>
+            <td>{props.contact.notes}</td>
         </tr>
     );
 }

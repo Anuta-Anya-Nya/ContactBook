@@ -1,7 +1,7 @@
 import React from 'react'
 import TableRowItem from './components/TableRowItem'
 
-const TableView = () => {
+const TableView = (props) => {
     return (
         <table className="table table-hover">
             <thead>
@@ -13,10 +13,12 @@ const TableView = () => {
               </tr>
             </thead>
             <tbody>
-              <TableRowItem />
-              <TableRowItem />
-              <TableRowItem />
-              <TableRowItem />
+            {
+                props.data.map(item => (
+                   <TableRowItem contact={item}/> 
+                ))
+            }
+              
               
             </tbody>
           </table>
