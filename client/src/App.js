@@ -17,11 +17,24 @@ function App() {
     { id: 3, fullName: 'FIO3', phone: '+7 111 111 11 13', notes: 'note3' },
     { id: 4, fullName: 'FIO4', phone: '+7 111 111 11 14', notes: 'note4' },
     { id: 5, fullName: 'FIO5', phone: '+7 111 111 11 15', notes: 'note5' }
-  ])
-  const appendContact = () => {
-    const temp = { id: 5, fullName: 'FIO5', phone: '+7 111 111 11 15', notes: 'note5' };
+  ]);
+
+  let currentId = 0;
+  if (items.length === 0) {
+    currentId = 1;
+  } else {
+    currentId = items[items.length - 1].id + 1;
+  }
+
+  const appendContact = (fullName, phone, notes) => {
+    const temp = { id: currentId, fullName: fullName, phone: phone, notes: notes };
     setItems([...items, temp]);
   }
+
+  const removeItem = (id) => {
+    setItems(items.filter(el => el.id !== id));
+  }
+
   return (
     <div className="container mt-5">
       <div className="card">
@@ -29,7 +42,7 @@ function App() {
           <h1>Список контактов</h1>
         </div>
         <div className="card-body">
-          <TableView data={items} />
+          <TableView data={items} removeItem={removeItem} />
           <FormNewItem appendContact={appendContact} />
         </div>
       </div>
