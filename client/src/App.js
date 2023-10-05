@@ -2,7 +2,7 @@ import "./App.css";
 import TableView from './layouts/tableView/TableView';
 import React, { useState, useEffect } from 'react';
 import FormNewItem from './layouts/formNewItem/FormNewItem'
-import axios, { Axios } from "axios";
+import axios from "axios";
 
 function App() {
   // const items = [
@@ -13,51 +13,65 @@ function App() {
   //   { id: 5, fullName: 'FIO5', phone: '+7 111 111 11 15', notes: 'note5' }
   // ];
   const [items, setItems] = useState([]);
-  useEffect(()=>{
+  useEffect(() => {
     axios.get('http://localhost:8080/api/contacts')
-    .then(result => {
-      const data = [];
-      result.data._embedded.contacts.forEach(item => {
-        data.push({
-          fullName: item.fullName,
-          phone: item.phone,
-          notes: item.notes
+      .then(result => {
+        const data = [];
+        result.data._embedded.contacts.forEach(item => {
+          data.push({
+            id: item.id,
+            fullName: item.fullName,
+            phone: item.phone,
+            notes: item.notes
+          })
         })
+        setItems(data);
       })
-      setItems(data);
-    })
   }, [])
-  
 
-  let currentId = 0;
-  if (items.length === 0) {
-    currentId = 1;
-  } else {
-    currentId = items[items.length - 1].id + 1;
-  }
+
+
 
   const appendContact = (fullName, phone, notes) => {
-    const temp = { id: currentId, fullName: fullName, phone: phone, notes: notes };
-    setItems([...items, temp]);
-  }
+    //   let currentId = 0;
+    // if (items.length === 0) {
+    //   currentId = 1;
+    // } else {
+    //   currentId = items[items.length - 1].id + 1;
+    // }
+    const temp = {
+      // id: currentId, 
+      fullName: fullName,
+      phone: phone,
+      notes: notes
+    };
+    const url = `http://localhost:8080/api/contacts`;
+    axios.post(url, temp)
+      .then(e => {
+        temp.id = e.data.id;
+        setItems([...items, temp]);
+      });
+    }
 
-  const removeItem = (id) => {
-    setItems(items.filter(el => el.id !== id));
-  }
+    const removeItem = (id) => {
+      const url = `http://localhost:8080/api/contacts/${id}`;
+      axios.delete(url);
+      setItems(items.filter(el => el.id !== id));
+    }
 
-  return (
-    <div className="container mt-5">
-      <div className="card">
-        <div className="card-header">
-          <h1>Список контактов</h1>
-        </div>
-        <div className="card-body">
-          <TableView data={items} removeItem={removeItem} />
-          <FormNewItem appendContact={appendContact} />
+    return (
+      <div className="container mt-5">
+        <div className="card">
+          <div className="card-header">
+            <h1>Список контактов</h1>
+          </div>
+          <div className="card-body">
+            <TableView data={items} removeItem={removeItem} />
+            <FormNewItem appendContact={appendContact} />
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
-export default App;
+  export default App;

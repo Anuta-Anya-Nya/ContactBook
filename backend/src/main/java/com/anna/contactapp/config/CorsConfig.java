@@ -13,7 +13,7 @@ public class CorsConfig implements RepositoryRestConfigurer {
     config.exposeIdsFor(Contact.class); //получать id из contacts
     cors.addMapping(config.getBasePath()+ "/**")
             .allowedOrigins(SettingsApp.getHOST()) //с какого url можно к нам обращаться
-            .allowedMethods("GET", "POST", "delete") //какими http методами можно польоваться
+            .allowedMethods("GET", "POST", "DELETE") //какими http методами можно польоваться
             .allowCredentials(true); //можно передавать куки в авторицации через core запросы
     }
 }
