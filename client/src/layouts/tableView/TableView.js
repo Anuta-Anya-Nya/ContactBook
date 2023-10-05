@@ -14,10 +14,11 @@ const TableView = (props) => {
       </thead>
       <tbody>
         {
-          props.data.map(item => (
+          props.data.map((item, index) => (
             <TableRowItem
               key={item.id}
               contact={item}
+              index={index}
               removeItem={props.removeItem} />
           ))
         }
